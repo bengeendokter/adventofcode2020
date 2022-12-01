@@ -1,8 +1,6 @@
 {
   "scripts": {
-    "build": "yarn tsc",
-    "start": "node build/main.js",
-    "go": "yarn tsc && node build/main.js"
+    "start": "yarn tsc && node build/main.js"
   },
   "devDependencies": {
     "@types/node": "^18.11.10",
