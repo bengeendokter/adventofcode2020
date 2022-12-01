@@ -1,6 +1,6 @@
 import day from "./day1";
 
 // change import to run new day
-console.log("start");
-day();
-console.log("end");
+console.info("start");
+console.log(`solution: ${day()}`);
+console.info("end");

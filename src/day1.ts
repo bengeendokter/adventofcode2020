@@ -1,21 +1,20 @@
 import * as fs from "fs";
 
-export default function day1()
+export default function day1(): number
 {
-  const content: string = fs.readFileSync("input/day1.txt", "utf-8");
+  const fileContent: string = fs.readFileSync("input/day1.txt", "utf-8");
 
-  const elves: Array<string> = content.split("\n\n");
+  const elvesByGroup: Array<string> = fileContent.split("\n\n");
 
-  const elvesList: Array<number> = elves
+  const elvesList: Array<number> = elvesByGroup
     .map(line => line.split("\n"))
-    .map(list =>
+    .map(stringList =>
     {
-      const numberList: Array<number> = list.map(stringNumber => parseInt(stringNumber));
+      const numberList: Array<number> = stringList.map(stringNumber => parseInt(stringNumber));
       return numberList.reduce((acc, number) => acc + number);
-    })
-    .filter(total => !isNaN(total));
+    });
 
   elvesList.sort((a, b) => b - a);
 
-  console.log(elvesList.slice(0, 3).reduce((acc, number) => acc + number));
+  return elvesList.slice(0, 3).reduce((acc, number) => acc + number);
 }
