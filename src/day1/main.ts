@@ -1,14 +1,14 @@
 import * as fs from "fs";
 
-const content = fs.readFileSync("input/day1.txt", "utf-8");
+const content: string = fs.readFileSync("input/day1.txt", "utf-8");
 
-const elves : Array<string> = content.split("\n\n");
+const elves: Array<string> = content.split("\n\n");
 
-const elvesList = elves
+const elvesList: Array<number> = elves
 .map(line => line.split("\n"))
 .map(list => 
     {
-        const numberList = list.map(stringNumber => parseInt(stringNumber));
+        const numberList: Array<number> = list.map(stringNumber => parseInt(stringNumber));
         return numberList.reduce((acc, number) => acc + number);
     })
 .filter(total => !isNaN(total));
