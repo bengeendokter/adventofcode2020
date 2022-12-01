@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "build": "yarn tsc",
+    "start": "node build/day1/main.js",
+    "go": "yarn tsc && node build/day1/main.js"
+  },
+  "devDependencies": {
+    "typescript": "^4.9.3"
+  }
+}
