@@ -1,6 +1,20 @@
-// https://adventofcode.com/2022/day/1
-const sayHello: string = "hello world 3";
+import * as fs from "fs";
 
-console.log(sayHello);
+const content = fs.readFileSync("input/day1.txt", "utf-8");
+
+const elves : Array<string> = content.split("\n\n");
+
+const elvesList = elves
+.map(line => line.split("\n"))
+.map(list => 
+    {
+        const numberList = list.map(stringNumber => parseInt(stringNumber));
+        return numberList.reduce((acc, number) => acc + number);
+    })
+.filter(total => !isNaN(total));
+
+elvesList.sort((a, b) => b - a);
+
+console.log(elvesList.slice(0, 3).reduce((acc, number) => acc + number));
 
 export { };
