@@ -2,108 +2,134 @@ import * as fs from "fs";
 
 export default function day(): number
 {
-	const fileContent: string = fs.readFileSync("input/day2.txt", "utf-8");
+  class InputError extends Error
+  {
+    constructor(message = "Input is not correct")
+    {
+      super(message);
+      this.name = "InputError";
+    }
+  }
 
-	//const /
-	const stringToItem: Map<string, string> = new Map([
-		["A", "R"],
-		["B", "P"],
-		["C", "S"],
-		["X", "R"],
-		["Y", "P"],
-		["Z", "S"],
-	]);
+  const fileContent: string = fs.readFileSync("input/day2.txt", "utf-8");
 
-	const SCORE = 
-	{
-		R: 1,
-		P: 2,
-		S: 3,
-		LOSE: 0,
-		DRAW: 3,
-		WIN: 6,
-	};
+  const elfInput = ["A", "B", "C"] as const;
+  type ElfInput = (typeof elfInput)[number];
+  const isElfInput = (x: any): x is ElfInput => elfInput.includes(x);
 
+  const youInput = ["X", "Y", "Z"] as const;
+  type YouInput = (typeof youInput)[number];
+  const isYouInput = (x: any): x is YouInput => youInput.includes(x);
 
-//["A",
-	const itemToScore: Map<string, number> = new Map([
-		["R", SCORE.R],
-		["P", SCORE.P],
-		["S", SCORE.S],	
-	]); 
+  const input = [...elfInput, ...youInput] as const;
+  type Input = (typeof input)[number];
+  const isInput = (x: any): x is Input => isElfInput(x) || isYouInput(x);
 
-	const rockScoreMap: Map<string, number> = new Map([
-		["R", SCORE.DRAW],
-		["P", SCORE.LOSE],
-		["S", SCORE.WIN],
-	]);
+  type Item = "R" | "P" | "S";
 
-	const paperScoreMap: Map<string, number> = new Map([
-		["R", SCORE.WIN],
-		["P", SCORE.DRAW],
-		["S", SCORE.LOSE],
-	]);
+  const stringToItem: Map<Input, Item> = new Map([
+    ["A", "R"],
+    ["B", "P"],
+    ["C", "S"],
+    ["X", "R"],
+    ["Y", "P"],
+    ["Z", "S"],
+  ]);
 
-	const scizzorsScoreMap: Map<string, number> = new Map([
-		["R", SCORE.LOSE],
-		["P", SCORE.WIN],
-		["S", SCORE.DRAW],
-	]);
+  const SCORE: { readonly [key: string]: number } =
+  {
+    R: 1,
+    P: 2,
+    S: 3,
+    LOSE: 0,
+    DRAW: 3,
+    WIN: 6,
+  };
 
-	const rockToYou: Map<string, string> = new Map([
-		["X", "S"],
-		["Y", "R"],
-		["Z", "P"],
-	]);
+  const itemToScore: Map<Item, number> = new Map([
+    ["R", SCORE.R],
+    ["P", SCORE.P],
+    ["S", SCORE.S],
+  ]);
 
-	const paperToYou: Map<string, string> = new Map([
-		["X", "R"],
-		["Y", "P"],
-		["Z", "S"],
-	]);
+  const rockScoreMap: Map<Item, number> = new Map([
+    ["R", SCORE.DRAW],
+    ["P", SCORE.LOSE],
+    ["S", SCORE.WIN],
+  ]);
 
-	const scizzorsToYou: Map<string, string> = new Map([
-		["X", "P"],
-		["Y", "S"],
-		["Z", "R"],
-	]);
+  const paperScoreMap: Map<Item, number> = new Map([
+    ["R", SCORE.WIN],
+    ["P", SCORE.DRAW],
+    ["S", SCORE.LOSE],
+  ]);
 
-	const elfToYouMap = new Map([
-		["A", rockToYou],
-		["B", paperToYou],
-		["C", scizzorsToYou],
-	]);
+  const scissorsScoreMap: Map<Item, number> = new Map([
+    ["R", SCORE.LOSE],
+    ["P", SCORE.WIN],
+    ["S", SCORE.DRAW],
+  ]);
 
-	function matchToScore(you: string, elf: string): number
-	{
-		const itemScore: number = itemToScore.get(you);
+  const rockToYou: Map<YouInput, Item> = new Map([
+    ["X", "S"],
+    ["Y", "R"],
+    ["Z", "P"],
+  ]);
 
-		let matchScore: number = 0;
+  const paperToYou: Map<YouInput, Item> = new Map([
+    ["X", "R"],
+    ["Y", "P"],
+    ["Z", "S"],
+  ]);
 
-		if(you === "R")
-		{
-			matchScore = rockScoreMap.get(elf);
-		}
-		else if(you === "P")
-		{
-			matchScore = paperScoreMap.get(elf);
-		}
-		else // you == "S"
-		{
-			matchScore = scizzorsScoreMap.get(elf);
-		}
-		
-		return itemScore + matchScore;
-	};
+  const scissorsToYou: Map<YouInput, Item> = new Map([
+    ["X", "P"],
+    ["Y", "S"],
+    ["Z", "R"],
+  ]);
 
-	//let itemScore: number = 0;
-	//let matchScore: number = 0
+  const elfToYouMap: Map<ElfInput, Map<YouInput, Item>> = new Map([
+    ["A", rockToYou],
+    ["B", paperToYou],
+    ["C", scissorsToYou],
+  ]);
 
-	const lineList: Array<string> = fileContent.split("\n").filter(line => line.length !== 0);
-	const matchList = lineList.map(line => line.split(" "));
-	const scoreList: Array<number> = matchList.map(([elf, you]) => matchToScore(elfToYouMap.get(elf).get(you), stringToItem.get(elf)));
-	console.log(scoreList);
-	console.log(scoreList[scoreList.length - 1]);
-	console.log(scoreList[scoreList.length - 2]);
-	return scoreList.reduce((total, score) => total + score);// + matchS;
+  const youToScoreMap: Map<Item, Map<Item, number>> = new Map([
+    ["R", rockScoreMap],
+    ["P", paperScoreMap],
+    ["S", scissorsScoreMap],
+  ]);
+
+  function matchToScore(elf: Input, you: Input): number
+  {
+    if(!isElfInput(elf) || !isYouInput(you))
+    {
+      throw new InputError();
+    }
+
+    const elfItem = stringToItem.get(elf);
+    const youItem = elfToYouMap.get(elf).get(you);
+
+    const itemScore: number = itemToScore.get(youItem);
+
+    let matchScore: number = youToScoreMap.get(youItem).get(elfItem);
+
+    return itemScore + matchScore;
+  };
+
+  const lineList: string[] = fileContent.split("\n").filter(line => line.length !== 0);
+  const matchList: Input[][] = lineList.map(line =>
+  {
+    const list: string[] = line.split(" ");
+    const listTrimmed: string[] = list.map(listItem => listItem.trim());
+    if(!listTrimmed.every(isInput))
+    {
+      throw new InputError();
+    }
+
+    return listTrimmed;
+  });
+  const scoreList: number[] = matchList.map(([elf, you]) => matchToScore(elf, you));
+
+  return scoreList.reduce((total, score) => total + score);
 }
