@@ -1,6 +1,6 @@
 import * as fs from "fs";
 
-export default function day(): number
+export default function day3(): number
 {
   console.log("day3");
   const fileContent: string = fs.readFileSync("input/day3.txt", "utf-8");
