@@ -2,6 +2,7 @@ import * as fs from "fs";
 
 export default function day1(): number
 {
+  console.log("day1");
   const fileContent: string = fs.readFileSync("input/day1.txt", "utf-8");
 
   const elvesByGroup: Array<string> = fileContent.split("\n\n");

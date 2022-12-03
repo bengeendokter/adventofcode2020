@@ -2,6 +2,7 @@ import * as fs from "fs";
 
 export default function day(): number
 {
+  console.log("day2");
   class InputError extends Error
   {
     constructor(message = "Input is not correct")
