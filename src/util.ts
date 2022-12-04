@@ -23,6 +23,11 @@ export function splitByNewline(fileContent: string, noEmptyLine: boolean = true)
  * Returns the total sum of a list of numbers
  * @param {number[]} numberList A list of numbers
  * @returns {number} The total sum
+ * @example
+ *  sum([2, 3])
+ *  5
+ *  sum([8, 1, 1])
+ *  // => 5
  */
 export function sum(numberList: number[]): number
 {

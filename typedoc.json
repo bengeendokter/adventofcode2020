@@ -1,0 +1,5 @@
+{
+  "name": "AdventOfCode2022",
+  "entryPoints": ["src/day*.ts", "src/util.ts"],
+  "out": "docs"
+}
