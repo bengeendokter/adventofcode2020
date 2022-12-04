@@ -1,4 +1,5 @@
 import * as fs from "fs";
+import { splitByNewline, sum } from "./util";
 
 export default function day2(): number
 {
@@ -118,7 +119,7 @@ export default function day2(): number
     return itemScore + matchScore;
   };
 
-  const lineList: string[] = fileContent.split("\n").filter(line => line.length !== 0);
+  const lineList: string[] = splitByNewline(fileContent);
   const matchList: Input[][] = lineList.map(line =>
   {
     const list: string[] = line.split(" ");
@@ -132,5 +133,5 @@ export default function day2(): number
   });
   const scoreList: number[] = matchList.map(([elf, you]) => matchToScore(elf, you));
 
-  return scoreList.reduce((total, score) => total + score);
+  return sum(scoreList);
 }

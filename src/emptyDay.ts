@@ -1,4 +1,5 @@
 import * as fs from "fs";
+import { splitByNewline, sum } from "./util";
 
 export default function day(): any
 {

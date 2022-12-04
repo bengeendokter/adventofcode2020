@@ -1,4 +1,5 @@
 import * as fs from "fs";
+import { sum } from "./util";
 
 export default function day1(): number
 {
@@ -17,5 +18,5 @@ export default function day1(): number
 
   elvesList.sort((a, b) => b - a);
 
-  return elvesList.slice(0, 3).reduce((acc, number) => acc + number);
+  return sum(elvesList.slice(0, 3));
 }

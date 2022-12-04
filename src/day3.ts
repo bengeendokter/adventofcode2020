@@ -1,4 +1,5 @@
 import * as fs from "fs";
+import { splitByNewline, sum } from "./util";
 
 export default function day3(): number
 {
@@ -23,7 +24,7 @@ export default function day3(): number
   {
     let result: string[][] = [];
 
-    for (let index = 0; index < rsList.length; index += n)
+    for(let index = 0; index < rsList.length; index += n)
     {
       result.push(rsList.slice(index, index + n));
     }
@@ -31,10 +32,7 @@ export default function day3(): number
     return result;
   }
 
-  const rucksackList: string[] = fileContent
-    .split("\n")
-    .map(line => line.trim())
-    .filter(line => line.length !== 0);
+  const rucksackList: string[] = splitByNewline(fileContent);
 
   // part 1
   // const rucksackHalvesList: string[][] = rucksackList
@@ -50,8 +48,8 @@ export default function day3(): number
   const elfGroupList: string[][] = groupByN(rucksackList);
 
   const badgeList: string[] = elfGroupList
-  .map(([g1, g2, g3]) => [...g1].find(char => g2.includes(char) && g3.includes(char)));
+    .map(([g1, g2, g3]) => [...g1].find(char => g2.includes(char) && g3.includes(char)));
 
   const priorityList: number[] = badgeList.map(charToPriority);
-  return priorityList.reduce((total, priority) => total + priority);
+  return sum(priorityList);
 }
