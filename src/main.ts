@@ -1,4 +1,4 @@
-import day from "./day5";
+import day from "./day6";
 
 // change import to run new day
 console.info("start");
