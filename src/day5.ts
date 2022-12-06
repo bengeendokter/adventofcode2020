@@ -1,5 +1,5 @@
 import * as fs from "fs";
-import { splitByNewline } from "./util";
+import { splitByNewline } from "./util.js";
 
 export default function day5(): string
 {

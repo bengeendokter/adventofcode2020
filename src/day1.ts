@@ -1,5 +1,5 @@
 import * as fs from "fs";
-import { sum } from "./util";
+import { sum } from "./util.js";
 
 export default function day1(): number
 {

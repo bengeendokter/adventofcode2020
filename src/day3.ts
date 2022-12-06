@@ -1,5 +1,5 @@
 import * as fs from "fs";
-import { splitByNewline, sum } from "./util";
+import { splitByNewline, sum } from "./util.js";
 
 export default function day3(): number
 {
